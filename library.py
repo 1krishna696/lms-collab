@@ -18,6 +18,10 @@ class Library:
         self.members = {}
 
     # --- Book Management ---
+class Library:
+    def __init__(self):
+        self.books = {}
+
     def add_book(self, book: Book):
         """Adds a book to the library inventory."""
         self.books[book.book_id] = book
