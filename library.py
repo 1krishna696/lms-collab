@@ -16,12 +16,9 @@ class Library:
     def __init__(self):
         self.books = {}
         self.members = {}
+        self.loans = {}  # Tracks active loans as {book_id: member_id}
 
     # --- Book Management ---
-class Library:
-    def __init__(self):
-        self.books = {}
-
     def add_book(self, book: Book):
         """Adds a book to the library inventory."""
         self.books[book.book_id] = book
@@ -59,3 +56,32 @@ class Library:
         new_member = Member(member_id, name, email)
         self.members[member_id] = new_member
         return new_member
+
+    # --- Loan Management (3rd Issue) ---
+    def issue_loan(self, member_id: str, book_id: str) -> bool:
+        """Issues a loan to a member if both entities exist and the book is available."""
+        if member_id not in self.members or book_id not in self.books:
+            raise ValueError("Member or Book not found.")
+            
+        book = self.books[book_id]
+        if not book.available:
+            raise ValueError("Book is not available.")
+            
+        # Update status and save loan record
+        book.available = False
+        self.loans[book_id] = member_id
+        return True
+
+    def return_loan(self, book_id: str) -> bool:
+        """Processes a book return, updating its status back to available."""
+        if book_id not in self.books:
+            raise ValueError("Book not found.")
+            
+        return True
+        # Revert status and clean up loan records
+        self.books[book_id].available = True
+        del self.loans[book_id]
+        if book_id not in self.loans:
+            raise ValueError("Book was not checked out.")
+            
+
